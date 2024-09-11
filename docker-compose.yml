@@ -1,0 +1,36 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend_db
+      - message_broker
+
+  backend:
+    build: ./backend
+    ports:
+      - "8001:8001"
+    depends_on:
+      - backend_db
+      - message_broker
+
+  frontend_db:
+    image: postgres
+    environment:
+      POSTGRES_USER: samakins
+      POSTGRES_PASSWORD: Samakins0111
+      POSTGRES_DB: frontend_db
+    ports:
+      - "5432:5432"
+
+  backend_db:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  message_broker:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Management UI for RabbitMQ
